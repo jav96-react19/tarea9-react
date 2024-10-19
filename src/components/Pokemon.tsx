@@ -1,12 +1,12 @@
-import {GetPokemonCharacter} from "@/services/PokemonCharacter/GetPokemonCharacter.tsx"
+import {GetPokemonCharacter} from "@/services/api/PokemonCharacter/GetPokemonCharacter"
 
 export const Pokemon = () => 
 {
-    const {PokemonProfile, isLoading} = GetPokemonCharacter();
+    const {PokemonProfile} = GetPokemonCharacter();
     const {name, image} = PokemonProfile;
             
     return (
-        isLoading ? 
+        PokemonProfile.loader ? 
         <>
             <h1 className="loader-title">Obteniendo datos de tú pokemon</h1>
             <span className="loader"></span>

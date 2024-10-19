@@ -1,12 +1,10 @@
 import {useEffect} from "react";
 import {usePokemonProfile} from '@/hooks/PokemonDetails/usePokemonProfile.tsx';
-import { usePokemonLoader } from '@/hooks/PokemonDetails/usePokemonLoader.tsx';
-import {endpoint} from "@/services/AxiosInstance/axiosInstance.tsx" 
+import {endpoint} from "@/services/api/instance/axios" 
 
 export const GetPokemonCharacter = () => 
 {
     const {PokemonProfile, setPokemonProfile} = usePokemonProfile();
-    const {isLoading, setIsLoading} = usePokemonLoader();
 
     useEffect(() => 
     {
@@ -21,10 +19,11 @@ export const GetPokemonCharacter = () =>
                     const {name, sprites} = request.data;
                     const { front_shiny } = sprites;
 
-                    setPokemonProfile({
+                    setPokemonProfile(initialData => ({
+                        ...initialData,
                         name: name,
                         image: front_shiny
-                    })
+                    }))
                 }
             }
             catch(error) {
@@ -34,8 +33,8 @@ export const GetPokemonCharacter = () =>
         
         const timeoutId = setTimeout(() => 
         {
-            setIsLoading(false);
-        }, 1500)
+            setPokemonProfile(initialData => ({...initialData, loader: !initialData.loader}))
+        }, 1100)
 
         fetchData();
 
@@ -43,5 +42,5 @@ export const GetPokemonCharacter = () =>
 
     }, [])
 
-    return {PokemonProfile, isLoading};
+    return {PokemonProfile};
 }
